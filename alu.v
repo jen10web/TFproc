@@ -1,10 +1,10 @@
-module alu #(parameter WIDTH = 4) // is 4 for testing purposes
+module alu #(parameter WIDTH = 16) // is 4 for testing purposes
             (input      [WIDTH-1:0] a, b, // a is Rdest, b is Rsrc
              input      [4:0]    	aluOp, 
 				 input c,
              output reg [WIDTH-1:0] result,
-				 output reg [4:0] conCodes,
-				 output reg codesComputed);
+				 output reg [4:0] conCodes);
+				// output reg codesComputed);
 
 	reg 		[WIDTH-1:0] overflowRes, carryoutRes;
 
@@ -14,16 +14,17 @@ module alu #(parameter WIDTH = 4) // is 4 for testing purposes
    always@(*)
 	begin
 		conCodes = 5'b00000;
-		codesComputed = 'd0;
+		//codesComputed = 'd0;
 		carryoutRes = 'd0;
 		overflowRes = 'd0;
+		//codesComputed = 'd1;
 		//result = 16'd0;
 
 		
 		case(aluOp)
 			'd0:									//CMP
 					begin
-						codesComputed = 1;
+						//codesComputed = 1;
 						result = a - b; 	
 						if (a == b) begin
 							conCodes[3] = 1;					// check zero
@@ -54,7 +55,7 @@ module alu #(parameter WIDTH = 4) // is 4 for testing purposes
 				conCodes = 5'd0;
 			end
 			'd3: begin
-				codesComputed = 1;
+				//codesComputed = 1;
 				result = a + b;						// ADD
 				conCodes = 5'd0;
 				overflowRes = ($signed(a) - $signed(b)); 		// check flag
@@ -69,7 +70,7 @@ module alu #(parameter WIDTH = 4) // is 4 for testing purposes
 				end
 			end
 			'd4: begin 
-				codesComputed = 1;
+				//codesComputed = 1;
 				result = a + b + c;		// ADDC
 				conCodes = 5'd0;
 				overflowRes = ($signed(a) - $signed(b)); 		// check flag
@@ -84,7 +85,7 @@ module alu #(parameter WIDTH = 4) // is 4 for testing purposes
 				end
 			end
 			'd5: begin
-				codesComputed = 1;
+				//codesComputed = 1;
 				result = ($signed(a)) - ($signed(b)); 						// SUB
 				conCodes = 5'd0;
 				overflowRes = ($signed(a) - $signed(b)); 		// check flag
@@ -99,7 +100,7 @@ module alu #(parameter WIDTH = 4) // is 4 for testing purposes
 				end
 			end
 			'd6: begin
-				codesComputed = 1;
+				//codesComputed = 1;
 				result = a - b - c;		// SUBC
 				conCodes = 5'd0;
 				overflowRes = ($signed(a) - $signed(b)); 		// check flag

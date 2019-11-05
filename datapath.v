@@ -1,6 +1,6 @@
 module datapath #(parameter WIDTH = 16)
 				(  input clk, reset, muxBin, muxPc, shiftOp,  muxExtImm, 
-					input  instrRegEn, regFileEn, memDataRegEn, muxMemAdr, outRegEn,
+					input  instrRegEn, regFileEn, memDataRegEn, muxMemAdr, outRegEn,codesComputed,
 					input [1:0] muxAin, muxToRegFile, muxShiftAmount, muxShiftShifter, muxOut, pcEn, 
 					input [WIDTH-1:0] dataFromMem, pcLoad,
 					input [4:0] aluOp,
@@ -13,7 +13,7 @@ wire [WIDTH-1:0]	aluOutW, toCodeCheckW, muxToOutRegW, outW, pcAddW, pcCountW;
 wire [4:0] conCodesW;
 wire [3:0] srcW, destW;
 wire [7:0] immW;
-wire codesComputedW;
+
 
 
 register instrReg(dataFromMem, instrRegEn, clk, instrBus);
@@ -49,9 +49,9 @@ mux4 muxShiftAm(srcFromRegFW, immExtW, 16'd8, 16'd0, muxShiftAmount, shiftAmount
 
 shifter Shifter(shiftShifterW, shiftAmountW, shiftOp, shiftedW);
 
-alu ALU(aW, bW, aluOp, toCodeCheckW[0], aluOutW, conCodesW, codesComputedW); // carry comes from the condition of Carry from last instr 
+alu ALU(aW, bW, aluOp, toCodeCheckW[0], aluOutW, conCodesW); // carry comes from the condition of Carry from last instr 
 
-register codesRegister({{WIDTH-5{1'b0}},conCodesW}, codesComputedW, clk, toCodeCheckW ); // extends the 5 bit output
+register codesRegister({{WIDTH-5{1'b0}},conCodesW}, codesComputed, clk, toCodeCheckW ); // extends the 5 bit output
 
 condCheck conditionCheck(toCodeCheckW, destW, conCodesOut );	// destW is in the same spot as the conditions are
 

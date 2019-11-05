@@ -1,8 +1,8 @@
 module controller #(parameter WIDTH = 16)
-					(input clk, reset ,
+					(input clk, reset, 
 					input [WIDTH-1:0] conCodesOut,
 					input [3:0] opCode, opCodeExt,
-					output reg  muxBin, muxPc, shiftOp, muxExtImm, memRead, memWrite,
+					output reg  muxBin, muxPc, shiftOp, muxExtImm, memRead, memWrite, codesComputed,
 					output reg  instrRegEn, regFileEn, memDataRegEn, muxMemAdr, outRegEn,
 					output reg  [1:0] muxAin, muxToRegFile, muxShiftAmount, muxOut, pcEn, muxShiftShifter,
 					output reg  [4:0] aluOp);
@@ -36,6 +36,7 @@ begin
 	memRead = 0;
 	memWrite = 0;
 	instrRegEn = 0;
+	codesComputed = 0;
 	regFileEn = 0;
 	memDataRegEn = 0;
 	muxMemAdr = 0;
@@ -80,15 +81,33 @@ begin
 			muxAin = 'd1;
 			muxBin = 'd1;
 			case (opCodeExt)
-				4'b1011: aluOp = 'd0;	// CMP
+				4'b1011: begin 			// CMP
+					aluOp = 'd0;
+					codesComputed = 1;
+				end
 				4'b0001: aluOp = 'd1;	// AND
-				4'b0010: aluOp = 'd2; // OR
+				4'b0010: aluOp = 'd2; 	// OR
 				4'b0011: aluOp = 'd7;	//XOR
-				4'b0101: aluOp = 'd3;	// ADD
-				4'b0110: aluOp = 'd3;	// ADDU
-				4'b0111: aluOp = 'd4;	// ADDC
-				4'b1001: aluOp = 'd5;	// SUB
-				4'b1010: aluOp = 'd6; 	// SUBC
+				4'b0101: begin				// ADD
+					aluOp = 'd3;				
+					codesComputed = 1;
+				end
+				4'b0110: begin				// ADDU
+					aluOp = 'd4;				
+					codesComputed = 1;
+				end
+				4'b0111: begin				// ADDC
+					aluOp = 'd4;				
+					codesComputed = 1;
+				end
+				4'b1001: begin				// SUB
+					aluOp = 'd5;				
+					codesComputed = 1;
+				end
+				4'b1010: begin				// SUBC
+					aluOp = 'd6;				
+					codesComputed = 1;
+				end
 				default: aluOp = 'd3;	// shouldnt happen
 			endcase
 			outRegEn = 1;
@@ -100,13 +119,33 @@ begin
 			muxAin = 1;
 			muxBin = 1;
 			case (opCode)
-				4'b1011: aluOp = 0;	// CMP
+				4'b1011: begin 			// CMP
+					aluOp = 'd0;
+					codesComputed = 1;
+				end
 				4'b0001: aluOp = 'd1;	// AND
-				4'b0010: aluOp = 'd2; // OR
+				4'b0010: aluOp = 'd2; 	// OR
 				4'b0011: aluOp = 'd7;	//XOR
-				4'b0101: aluOp = 'd3;	// ADD
-				4'b1001: aluOp = 'd5;	// SUB
-				4'b1010: aluOp = 'd6; 	// SUBC
+				4'b0101: begin				// ADD
+					aluOp = 'd3;				
+					codesComputed = 1;
+				end
+				4'b0110: begin				// ADDU
+					aluOp = 'd4;				
+					codesComputed = 1;
+				end
+				4'b0111: begin				// ADDC
+					aluOp = 'd4;				
+					codesComputed = 1;
+				end
+				4'b1001: begin				// SUB
+					aluOp = 'd5;				
+					codesComputed = 1;
+				end
+				4'b1010: begin				// SUBC
+					aluOp = 'd6;				
+					codesComputed = 1;
+				end
 				default: aluOp = 'd3;	// shouldnt happen
 			endcase
 			outRegEn = 1;
@@ -256,7 +295,7 @@ begin
 					nextState = 'd19;
 				end
 				
-				4'b1011: begin		// MOVI
+				4'b1101: begin		// MOVI
 					nextState  = 'd20;
 				end
 				
