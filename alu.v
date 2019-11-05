@@ -1,4 +1,4 @@
-module alu #(parameter WIDTH = 16) // is 4 for testing purposes
+module alu #(parameter WIDTH = 4) // is 4 for testing purposes
             (input      [WIDTH-1:0] a, b, // a is Rdest, b is Rsrc
              input      [4:0]    	aluOp, 
 				 input c,
@@ -14,7 +14,7 @@ module alu #(parameter WIDTH = 16) // is 4 for testing purposes
    always@(*)
 	begin
 		conCodes = 5'b00000;
-		codesComputed = 0;
+		codesComputed = 'd0;
 		carryoutRes = 'd0;
 		overflowRes = 'd0;
 		//result = 16'd0;
@@ -85,7 +85,7 @@ module alu #(parameter WIDTH = 16) // is 4 for testing purposes
 			end
 			'd5: begin
 				codesComputed = 1;
-				result = a - b; 						// SUB
+				result = ($signed(a)) - ($signed(b)); 						// SUB
 				conCodes = 5'd0;
 				overflowRes = ($signed(a) - $signed(b)); 		// check flag
 				if (($signed(a) < 0) != ($signed(b) < 0)) begin						// NOTE: be wary of $signed in non tb
