@@ -14,6 +14,6 @@ module regfile #(parameter WIDTH = 16, REGBITS = 4)
    always @(posedge clk)
       if (regwrite) RAM[wa] <= wd;	
 
-   assign rd1 = ra1 ? RAM[ra1] : 'd0;
-   assign rd2 = ra2 ? RAM[ra2] : 'd0;
+   assign rd1 = RAM[ra1];
+   assign rd2 = RAM[ra2];
 endmodule

@@ -193,7 +193,12 @@ begin
 		
 		'd12:begin
 			muxPc = conCodesOut[0];
-			pcEn = 'b10;
+			if (conCodesOut[0]) begin
+				pcEn = 'b10;
+			end
+			else  begin
+				pcEn = 'b11;
+			end
 			nextState = 'd1;
 		end
 		'd13:begin

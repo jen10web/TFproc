@@ -8,7 +8,7 @@ wire memWrite, memRead;
 
 Processor proc(clk, reset, dataFromMem, loadedAdr, memRead, memWrite, adrToMem, dataToMem);
 
-memTest memory(~clk, 1'b1, memWrite, adrToMem, dataToMem, dataFromMem );
+procMem memory(~clk, 1'b1, memWrite, adrToMem, dataToMem, dataFromMem );
 
 endmodule
 
