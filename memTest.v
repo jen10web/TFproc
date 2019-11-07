@@ -10,7 +10,8 @@ module memTest #(parameter WIDTH = 16, RAM_adr_BITS = 16)
 
  initial
 
- $readmemh("test.dat", ram);
+ //$readmemh("test.dat", ram);
+ $readmemh("math_tests.dat", ram);
 
  // This "always" block simulates as a RAM, and synthesizes to a block
  // RAM on the Spartan-3E part. Note that the RAM is clocked. Reading

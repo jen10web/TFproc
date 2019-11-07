@@ -79,7 +79,7 @@ begin
 		
 		'd4:begin	// state 4
 			muxAin = 'd1;
-			muxBin = 'd1;
+			muxBin = 'd0;
 			case (opCodeExt)
 				4'b1011: begin 			// CMP
 					aluOp = 'd0;
