@@ -108,6 +108,7 @@ begin
 					aluOp = 'd6;				
 					codesComputed = 1;
 				end
+				4'b1110: 	aluOp = 'd8;	// MUL		
 				default: aluOp = 'd3;	// shouldnt happen
 			endcase
 			outRegEn = 1;
@@ -146,6 +147,7 @@ begin
 					aluOp = 'd6;				
 					codesComputed = 1;
 				end
+				4'b1110: 	aluOp = 'd8;	// MUL	
 				default: aluOp = 'd3;	// shouldnt happen
 			endcase
 			outRegEn = 1;
